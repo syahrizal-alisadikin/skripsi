@@ -2,66 +2,66 @@
 @section('content')
 
 <main>
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Dashboard</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Jadwal Dosen {{Auth::guard('dosen')->user()->name}}</li>
-                        </ol>
-                       @if (session('create'))
-                        <div class="alert alert-primary">
-                            {{ session('create') }}
-                
-                        </div>
-                        @endif
-                                
-                        <div class="card mb-4">
-                            <div class="card-header d-flex">
-                               <div class="data">
-                                    <i class="fas fa-table mr-1"></i>
-                                Jadwal Dosen
-                                </div>
-                                
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Matakuliah</th>
-                                                <th>Sks </th>
-                                                <th>Hari</th>
-                                                <th>Jam Mulai</th>
-                                                <th>Jam Selesai</th>
-                                                <th>Sesi</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                       
-                                        <tbody>
-                                            <?php $i = 1?>
-                                            @foreach ($jadwal as $item)
-                                                <tr>
-                                                <td>{{$item->kode_matkul}}</td>
-                                                <td>{{$item->name}}</td>
-                                                <td>{{$item->sks}}</td>
-                                                <td>{{$item->hari}}</td>
-                                                <td>{{$item->jam_mulai}}</td>
-                                                <td>{{$item->jam_selesai}}</td>
-                                                <td>{{$item->jenis_kelas}}</td>
-                                                <td><a href="{{route('dosen.show',$item->id)}}" class="btn btn-success">Masuk Kelas</a></td>
-                                                </tr>
-                                                <?php $i++ ?>
-                                            @endforeach
-                                           
-                                           
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Jadwal Dosen {{Auth::guard('dosen')->user()->name}}</li>
+        </ol>
+        @if (session('create'))
+        <div class="alert alert-primary">
+            {{ session('create') }}
+            
+        </div>
+        @endif
+        
+        <div class="card mb-4">
+            <div class="card-header d-flex">
+             <div class="data">
+                <i class="fas fa-table mr-1"></i>
+                Jadwal Dosen
+            </div>
+            
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Matakuliah</th>
+                            <th>Sks </th>
+                            <th>Hari</th>
+                            <th>Jam Mulai</th>
+                            <th>Jam Selesai</th>
+                            <th>Sesi</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <?php $i = 1?>
+                        @foreach ($jadwal as $item)
+                        <tr>
+                            <td>{{$item->kode_matkul}}</td>
+                            <td>{{$item->name}}</td>
+                            <td>{{$item->sks}}</td>
+                            <td>{{$item->hari}}</td>
+                            <td>{{$item->jam_mulai}}</td>
+                            <td>{{$item->jam_selesai}}</td>
+                            <td>{{$item->jenis_kelas}}</td>
+                            <td><a href="{{route('dosen.show',$item->id)}}" class="btn btn-success">Masuk Kelas</a></td>
+                        </tr>
+                        <?php $i++ ?>
+                        @endforeach
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
 
 
 
@@ -74,9 +74,9 @@
         <h5 class="modal-title" id="exampleModalLabel">Tambah Dosen</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+      </button>
+  </div>
+  <div class="modal-body">
       <form action="{{route('dosen.store')}}" method="POST">
         @csrf
         <div class="form-group">
@@ -93,14 +93,14 @@
         </div>
 
         <div class="form-group">
-        <button type="submit" class="btn btn-success d-block w-100">Tambah Data</button>
+            <button type="submit" class="btn btn-success d-block w-100">Tambah Data</button>
 
         </div>
-        </form>
-      </div>
-      
-    </div>
-  </div>
+    </form>
 </div>
-    
+
+</div>
+</div>
+</div>
+
 @endsection

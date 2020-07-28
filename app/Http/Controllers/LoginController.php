@@ -30,6 +30,7 @@ class LoginController extends Controller
             $loginType => $request->email,
             'password' => $request->password
         ];
+        
         // Passwordnya pake bcrypt
         if (Auth::guard('dosen')->attempt($login)) {
             return redirect()->intended('/dosen');

@@ -17,7 +17,7 @@ Route::get('/', 'LoginController@getLogin');
 Route::post('/login', 'LoginController@postLogin');
 Route::get('/logout', 'LoginController@logout');
 
-Route::get('/tatusaha', 'TataUsahaController@index')->name('home');
+Route::get('/tatusaha', 'TataUsaha\TataUsahaController@index')->name('home');
 // Route::get('/admin', 'TataUsaha\TataUsahaController@index')->name('dashboard');
 // Route::post('/store', 'TataUsahaController@store')->name('admin-store');
 // Route::resource('dosen', 'DosenController');
@@ -38,13 +38,17 @@ Route::prefix('admin')
         Route::resource('tu-mahasiswa', 'MahasiswaController');
         Route::resource('matakuliah', 'MatakuliahController');
     });
-Route::prefix('dosen')
-    ->namespace('Dosen')
+Route::prefix('dosen')->namespace('Dosen')
     ->group(function () {
-        Route::get('/', 'DosenController@index')
-            ->name('dashboarddosen');
-
+        Route::get('/', 'DosenController@index')->name('dashboarddosen');
         Route::resource('dosen', 'DosenController');
         Route::resource('mahasiswa', 'MahasiswaController');
         Route::get('mahasiswa/{id_semester}', 'MahasiswaController@show')->name('mahasiswa');
+
+        // Masuk Kelas Controller
+        Route::post('/absen/process', 'DosenController@absenProcess')->name('process.absen');
+        Route::post('/absen/upload/materi', 'DosenController@uploadMateri')->name('upload.materi');
+
+        // Get File Materi Berdasarkan di database dan folder storange/image
+        Route::get('/upload/{file}', 'DosenController@fileMateri')->name('materi.file'); 
     });
