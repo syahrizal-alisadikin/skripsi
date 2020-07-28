@@ -61,8 +61,8 @@ class DosenController extends Controller
             $id_dosen = Auth::guard('dosen')->user()->id;
 
             $absen = array(
-                'id_jadwal' => 2,
-                'id_dosen' => $request->input('id_jadwal'),
+                'id_dosen' => $id_dosen,
+                'id_jadwal' => $request->input('id_jadwal'),
                 'alesan' => $request->input('alesan'),
                 'keterangan' => $request->input('keterangan'),
                 'tanggal' => date('Y-m-d'),
