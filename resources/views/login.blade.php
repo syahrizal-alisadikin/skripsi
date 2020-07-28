@@ -18,16 +18,22 @@
 
   <body>
  
-  @if (session('success-message'))
+  {{-- @if (session('success-message'))
         <div class="alert alert-success text-center">
             {{ session('success-message') }}
             
         </div>
-   @endif
+   @endif --}}
     <!-- Page Content -->
     <div class="page-content page-login">
       <section class="store-login" data-aos="fade-up">
         <div class="container">
+          @if ($message = Session::get('gagal'))
+          <div class="alert alert-danger alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <strong>{{ $message }}</strong>
+          </div>
+          @endif
           <div class="row align-item-center row-login">
             <div class="col-lg-6 text-center" style="">
               <h3>Universitas <br> Satya Negara Indonesia</h3>
@@ -36,36 +42,80 @@
             </div>
             <div class="col-lg-5">
               <h2>Selamat Datang</h2>
-              <form action="/login" method="POST" class="mt-3">
-                @csrf
-                <form-group>
-                  <label> Kode Dosen</label>
-                  <input type="text" class="form-control w-75 @error('kode') is-invalid @enderror" name="email" id="email" />
-                     @error('kode')
+              <ul class="nav nav-tabs" id="myTab">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#one">Dosen</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#two">Admin</a>
+                </li>
+              </ul>
+              <div class="tab-content pt-3" id="myTabContent">
+                <div class="tab-pane fade active show" id="one">
+                  <form action="/login" method="POST" class="mt-3">
+                    @csrf
+                    <form-group>
+                      <label> Kode Dosen</label>
+                      <input type="text" class="form-control w-75 @error('kode') is-invalid @enderror" name="kode" id="kode" />
+                      @error('kode')
                       <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
+                        <strong>{{ $message }}</strong>
                       </span>
-                    @enderror
-                </form-group>
-                <form-group>
-                  <label> Password</label>
-                  <input type="password" class="form-control w-75  @error('password') is-invalid @enderror" name="password" id="password" />
-                    @error('password')
+                      @enderror
+                    </form-group>
+                    <form-group>
+                      <label> Password</label>
+                      <input type="password" class="form-control w-75  @error('password') is-invalid @enderror" name="password" id="password" />
+                      @error('password')
                       <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
+                        <strong>{{ $message }}</strong>
                       </span>
-                    @enderror
-                  </form-group>
-                 <div class="form-check mt-3" id="ceklis">
-                    <input class="form-check-input" type="checkbox" value="" id="ceklis"  >
-                    <label class="form-check-label" for="ceklis">
-                    Ambil Lpk
-                    </label>
-                  </div>
-                <button type="submit" id="login" disabled class="btn btn-success d-block w-75 mt-4"
-                  >Login</button>
-                
-              </form>
+                      @enderror
+                    </form-group>
+                    <div class="form-check mt-3" id="ceklis">
+                      <input class="form-check-input" type="checkbox" value="" id="ceklis"  >
+                      <label class="form-check-label" for="ceklis">
+                        Ambil Lpk
+                      </label>
+                    </div>
+                    <button type="submit" id="login" disabled class="btn btn-success d-block w-75 mt-4"
+                    >Login</button>
+                  </form>
+                </div>
+                <div class="tab-pane fade" id="two">
+                  <form action="/login" method="POST" class="mt-3">
+                    @csrf
+                    <form-group>
+                      <label>Admin</label>
+                      <input type="text" class="form-control w-75 @error('email') is-invalid @enderror" name="email" id="email" />
+                      @error('email')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                      @enderror
+                    </form-group>
+                    <form-group>
+                      <label> Password</label>
+                      <input type="password" class="form-control w-75  @error('password') is-invalid @enderror" name="password" id="password" />
+                      @error('password')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                      @enderror
+                    </form-group>
+                    <div class="form-check mt-3" id="ceklis_admin">
+                      <input class="form-check-input" type="checkbox" value="" id="ceklis_admin"  >
+                      <label class="form-check-label" for="ceklis_admin">
+                        Ambil Lpk
+                      </label>
+                    </div>
+                    <button type="submit" id="login_admin" disabled class="btn btn-success d-block w-75 mt-4"
+                    >Login</button>
+                  </form>
+                </div>
+              </div>
+
+
             </div>
           </div>
         </div>
@@ -91,18 +141,40 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
- $(document).ready(function() {
-            $('#ceklis').on('click', 'input[type="checkbox"]', function() {
+      $(document).ready(function() {
+        $('#ceklis').on('click', 'input[type="checkbox"]', function() {
               // alert('ok');
-                if ($(this).is(":checked")) {
+              if ($(this).is(":checked")) {
                   // alert('ok');
-                    $('#login').prop("disabled", false);
+                  $('#login').prop("disabled", false);
                 } else if ($(this).is(":not(:checked)")) {
-                    $('#login').prop("disabled", true);
+                  $('#login').prop("disabled", true);
                 }
-            });
-        });
-</script>
+              });
+      }); 
+
+       $(document).ready(function() {
+        $('#ceklis_admin').on('click', 'input[type="checkbox"]', function() {
+              // alert('ok');
+              if ($(this).is(":checked")) {
+                  // alert('ok');
+                  $('#login_admin').prop("disabled", false);
+                } else if ($(this).is(":not(:checked)")) {
+                  $('#login_admin').prop("disabled", true);
+                }
+              });
+      }); 
+
+
+      $('#role').change(function () {
+        if ($('#dosen')) {
+          alert('dosen')
+          // '<input type="email" class="form-control w-75 @error('kode') is-invalid @enderror" name="email" />'
+        } else if ($('#admin')) {
+          alert('admin')
+        } 
+      })
+    </script>
     <script>
       AOS.init();
     </script>

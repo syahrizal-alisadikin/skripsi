@@ -12,9 +12,10 @@ class Admin extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
+    
     protected $table = "admin";
     protected $primaryKey = "id";
     protected $fillable = ['name', 'email', 'password'];
 
-    protected $hidden = [];
+    // protected $hidden = [];
 }
