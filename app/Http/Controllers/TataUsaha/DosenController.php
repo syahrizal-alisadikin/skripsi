@@ -149,7 +149,7 @@ class DosenController extends Controller
          ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
          ->where('dosen.id', $id_dosen)
          ->whereBetween('absen.tanggal', [$start, $end])
-         ->count();
+         ->get();
 
         // return resposen 
         return response()->json([
