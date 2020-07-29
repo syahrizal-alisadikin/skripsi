@@ -41,6 +41,12 @@ Route::prefix('admin')
         // Absensi Dosen
         Route::get('/absen-dosen', 'DosenController@absenDosen')->name('absen.dosen');
         Route::get('/absen-dosen/detail/{id_dosen}', 'DosenController@detailDosen')->name('absen.dosen.detail');
+
+        // Cetak PDF 1 Bulan
+        Route::get('/absen-dosen/detail/cetak/{id_dosen}', 'DosenController@cetakPDF');
+
+        // Cetak PDF 1 hari
+        Route::get('/absen-dosen/detail/cetak-perhari/{id_dosen}', 'DosenController@cetakPDFPerhari');
     });
 Route::prefix('dosen')->namespace('Dosen')
     ->group(function () {

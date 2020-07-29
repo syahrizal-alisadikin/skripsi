@@ -135,4 +135,44 @@ class DosenController extends Controller
 
         return view('tu.absen.absen_detail', compact('dosen', 'detail_dosen'));
     }
+
+    // Cetak PDF 1 Bulan
+    public function cetakPDF(Request $req, $id_dosen)
+    {
+         $start = $req->get('tanggal_start');
+         $end = $req->get('tanggal_end');
+
+         $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'jadwal.name as name_matkul', 'absen.*'];
+
+         $cetak_detail_dosen = Dosen::select($select)
+         ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
+         ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
+         ->where('dosen.id', $id_dosen)
+         ->whereBetween('absen.tanggal', [$start, $end])
+         ->count();
+
+        // return resposen 
+        return response()->json([
+            'start' => $start, 
+            'end' => $end, 
+            'data' => $cetak_detail_dosen
+        ]);
+    }
+
+    // Cetak PDF Perhari
+    public function cetakPDFPerhari($id_dosen)
+    {
+
+       $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'jadwal.name as name_matkul', 'absen.*'];
+       
+       $detail_dosen_perhari = Dosen::select($select)
+       ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
+       ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
+       ->where('dosen.id', $id_dosen)
+       ->first();
+
+        return response()->json([ 
+            'data' => $detail_dosen_perhari
+        ]);
+    }
 }
