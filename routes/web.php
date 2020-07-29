@@ -37,6 +37,10 @@ Route::prefix('admin')
         Route::resource('semester', 'SemesterController');
         Route::resource('tu-mahasiswa', 'MahasiswaController');
         Route::resource('matakuliah', 'MatakuliahController');
+
+        // Absensi Dosen
+        Route::get('/absen-dosen', 'DosenController@absenDosen')->name('absen.dosen');
+        Route::get('/absen-dosen/detail/{id_dosen}', 'DosenController@detailDosen')->name('absen.dosen.detail');
     });
 Route::prefix('dosen')->namespace('Dosen')
     ->group(function () {
@@ -48,7 +52,10 @@ Route::prefix('dosen')->namespace('Dosen')
         // Masuk Kelas Controller
         Route::post('/absen/process', 'DosenController@absenProcess')->name('process.absen');
         Route::post('/absen/upload/materi', 'DosenController@uploadMateri')->name('upload.materi');
-
+        Route::PUT('/dosen/dosen/{id}', 'DosenController@update_absen')->name('update.absen');
         // Get File Materi Berdasarkan di database dan folder storange/image
-        Route::get('/upload/{file}', 'DosenController@fileMateri')->name('materi.file'); 
+        Route::get('/upload/{file}', 'DosenController@fileMateri')->name('materi.file');
+
+        // Absen 
+        Route::resource('absensi', 'AbsenController');
     });

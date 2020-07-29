@@ -17,6 +17,7 @@ class DosenController extends Controller
     public function index()
     {
         $dosen = Dosen::all();
+
         return view('tu.dosen.index', compact('dosen'));
     }
 
@@ -102,5 +103,36 @@ class DosenController extends Controller
         $data = Dosen::findOrFail($id);
         $data->delete();
         return redirect()->route('tu-dosen.index')->with('create', 'Data Berhasil Dihapus!!');
+    }
+
+    // Absensi Dosen  
+    public function absenDosen()
+    {
+        $select_dosen = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*'];
+        $data_dosen = Dosen::all();
+
+        // echo json_encode($detail_dosen); die();
+
+        return view('tu.absen.index', compact('data_dosen'));
+    }
+
+    // Detail Dosen
+    public function detailDosen($id_dosen)
+    {
+        $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'jadwal.name as name_matkul', 'absen.*'];
+
+        // Data relasi dari 3 table dosen, absen, dan jadwal
+        $detail_dosen = Dosen::select($select)
+                    ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
+                    ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
+                    ->where('dosen.id', $id_dosen)
+                    ->get();
+
+        // Data Dosen Doang
+        $dosen = Dosen::findOrFail($id_dosen);
+
+        // echo json_encode($dosen); die();
+
+        return view('tu.absen.absen_detail', compact('dosen', 'detail_dosen'));
     }
 }

@@ -61,7 +61,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{route('tu-dosen.index')}}">List Dosen</a>
                                     {{-- <a class="nav-link" href="layout-sidenav-light.html">Jadwal Dosen</a> --}}
-                                     <a class="nav-link" href="layout-sidenav-light.html">Absen Dosen</a>
+                                     <a class="nav-link" href="{{ route('absen.dosen') }}">Absen Dosen</a>
                                 </nav>
                             </div>
                              <a class="nav-link" href="{{route('matakuliah.index')}}">
