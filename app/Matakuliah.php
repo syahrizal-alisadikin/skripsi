@@ -9,7 +9,7 @@ class Matakuliah extends Model
 {
     use SoftDeletes;
     protected $table = "jadwal";
-    protected $fillable = ['name', 'kode_matkul', 'sks', 'id_dosen', 'jenis_kelas', 'hari', 'jam_mulai', 'jam_selesai'];
+    // protected $fillable = ['name', 'kode_matkul', 'id_dosen', 'jenis_kelas', 'hari', 'jam_mulai', 'jam_selesai'];
 
     public function dosen()
     {

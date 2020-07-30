@@ -111,7 +111,7 @@ class DosenController extends Controller
         $select_dosen = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*'];
         $data_dosen = Dosen::all();
 
-        // echo json_encode($detail_dosen); die();
+        // return json_encode($data_dosen); die();
 
         return view('tu.absen.index', compact('data_dosen'));
     }
@@ -119,12 +119,13 @@ class DosenController extends Controller
     // Detail Dosen
     public function detailDosen($id_dosen)
     {
-        $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'jadwal.name as name_matkul', 'absen.*'];
+        $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'absen.*'];
 
         // Data relasi dari 3 table dosen, absen, dan jadwal
         $detail_dosen = Dosen::select($select)
                     ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
                     ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
+                    ->join('mata_kuliah', 'jadwal.id_matkul', '=', 'mata_kuliah.id')
                     ->where('dosen.id', $id_dosen)
                     ->get();
 
@@ -142,11 +143,12 @@ class DosenController extends Controller
          $start = $req->get('tanggal_start');
          $end = $req->get('tanggal_end');
 
-         $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'jadwal.name as name_matkul', 'absen.*'];
+         $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'absen.*'];
 
          $cetak_detail_dosen = Dosen::select($select)
          ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
          ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
+         ->join('mata_kuliah', 'jadwal.id_matkul', '=', 'mata_kuliah.id')
          ->where('dosen.id', $id_dosen)
          ->whereBetween('absen.tanggal', [$start, $end])
          ->get();
@@ -163,11 +165,12 @@ class DosenController extends Controller
     public function cetakPDFPerhari($id_dosen)
     {
 
-       $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'jadwal.name as name_matkul', 'absen.*'];
+       $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'absen.*'];
        
        $detail_dosen_perhari = Dosen::select($select)
        ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
        ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
+       ->join('mata_kuliah', 'jadwal.id_matkul', '=', 'mata_kuliah.id')
        ->where('dosen.id', $id_dosen)
        ->first();
 

@@ -24,7 +24,9 @@ class DosenController extends Controller
     {
         $id = Auth::guard('dosen')->user()->id;
         $jadwal =  Matakuliah::where('id_dosen', $id)->with(['semester', 'jurusan'])->get();
-        // dd($jadwal);
+        
+        // var_dump($jadwal); die();
+
         return view('dosen.index', compact('jadwal'));
     }
 
