@@ -20,13 +20,13 @@
                     <div class="card-header d-flex">
                         <div class="data">
                             <i class="fas fa-table mr-1"></i>
-                            {{$data->name}}
+                            {{$jadwal->name}}
                         </div>
 
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-
+                            
                             @if ($message = Session::get('sukses'))
                             <div class="alert alert-success alert-block">
                                 <button type="button" class="close" data-dismiss="alert">×</button> 
@@ -75,80 +75,107 @@
                                     @empty
                                     <tr>
                                         <td colspan="4" class="text-center">Belum Ada Materi <br>
+                                         
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadFile">
+                                              Upload File
+                                          </button>
+                                       </td>
+                                   </tr>
+                                   @endforelse
+                               </tbody>
+                           </table>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    @if ($message = Session::get('sukses_absen'))
+                    <div class="alert alert-success alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ $message }}</strong>
+                    </div>
+                    @endif
 
-                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadFile">
-                                          Upload File
-                                      </button>
-                                  </td>
-                              </tr>
-                              @endforelse
-                          </tbody>
-                      </table>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                @if ($message = Session::get('sukses_absen'))
-                <div class="alert alert-success alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
-                    <strong>{{ $message }}</strong>
+                    @if ($message = Session::get('gagal_absen'))
+                    <div class="alert alert-danger alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ $message }}</strong>
+                    </div>
+                    @endif
+
+                    @if ($message = Session::get('peringatan_absen'))
+                    <div class="alert alert-warning alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ $message }}</strong>
+                    </div>
+                    @endif
+                   @php
+                       $absen = App\Absen::where('id_jadwal', $jadwal->id)->where('id_dosen',Auth::guard('dosen')->user()->id)->get();
+                       
+                   @endphp
+                   @foreach ($absen as $item)
+                       @php
+                           $kerja = $item->jam_keluar;
+                       @endphp 
+                   @endforeach
+                   @if($kerja == $kerja)
+                   <form action="{{ route('update.absen',$data_absen->id) }}" method="POST">
+                     @if ($message = Session::get('success'))
+                            <div class="alert alert-success alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button> 
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @endif
+                        @csrf
+                        @method("PUT")
+                        <div class="form-group">
+                            <input type="text" id="matkul" class="form-control" value="{{$jadwal->matkul->nama}}">
+                            <input type="hidden" name="id_jadwal" id="id_jadwal" class="form-control" value="{{$jadwal->id}}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="matkul" class="form-control" value="Mata kuliah Selesai">
+                            <input type="hidden" name="id_jadwal" id="id_jadwal" class="form-control" value="{{$jadwal->id}}">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success d-block w-100">Absen keluar</button>
+                        </div>
+                    </form>
+                   @else
+                    <form action="{{ route('process.absen') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <input type="text" id="matkul" class="form-control" value="{{$jadwal->name}}">
+                            <input type="hidden" name="id_jadwal" id="id_jadwal" class="form-control" value="{{$jadwal->id}}">
+                        </div>
+                        <div class="form-group">
+                            <select name="keterangan" id="keterangan" class="form-control">
+                                <option value="hadir">Hadir</option>
+                                <option value="izin">Izin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="alesan" id="alesan" class="form-control" cols="30" rows="3" placeholder="keterangan"></textarea>
+                            <small style="color: red;">* Kosongkan Jika Hadir</small>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success d-block w-100">Kirim</button>
+                        </div>
+                    </form>
+                    @endif
+                   
+                    
                 </div>
-                @endif
-
-                @if ($message = Session::get('gagal_absen'))
-                <div class="alert alert-danger alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
-                    <strong>{{ $message }}</strong>
-                </div>
-                @endif
-
-                @if ($message = Session::get('peringatan_absen'))
-                <div class="alert alert-warning alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
-                    <strong>{{ $message }}</strong>
-                </div>
-                @endif
-                @php
-                $absen = App\Absen::where('id_jadwal', $data->id)->where('id_dosen',Auth::guard('dosen')->user()->id)->count();
-
-                @endphp
-
-
-                <form action="{{ route('process.absen') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <input type="text" id="matkul" class="form-control" value="{{$data->matkul->nama}}">
-                        <input type="hidden" name="id_jadwal" id="id_jadwal" class="form-control" value="{{$data->id}}">
-                    </div>
-                    <div class="form-group">
-                        <select name="keterangan" id="keterangan" class="form-control">
-                            <option value="hadir">Hadir</option>
-                            <option value="izin">Izin</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="alesan" id="alesan" class="form-control" cols="30" rows="3" placeholder="keterangan"></textarea>
-                        <small style="color: red;">* Kosongkan Jika Hadir</small>
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-success d-block w-100">Kirim</button>
-                    </div>
-                </form>
-
-
-
             </div>
         </div>
     </div>
 </div>
-</div>
 </main>
 
 <div>
-
+    
 </div>
 
 <!-- Modal -->
@@ -197,7 +224,7 @@
         <div class="form-group">
             <label for="name">Nama Materi</label>
             <input type="text" name="name_materi" class="form-control" placeholder="Nama Materi" required>
-            <input type="hidden" class="btn btn-primary" name="id_jadwal" value="{{ $data->id }}">
+            <input type="hidden" class="btn btn-primary" name="id_jadwal" value="{{ $jadwal->id }}">
         </div>
         <div class="form-group">
             <label>File Materi</label>

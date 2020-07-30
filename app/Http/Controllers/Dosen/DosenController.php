@@ -9,6 +9,7 @@ use App\Mahasiswa;
 use Illuminate\Http\Request;
 use App\Matakuliah;
 use App\Materi;
+use App\Absen;
 use DB;
 use Str;
 use Session;
@@ -23,9 +24,9 @@ class DosenController extends Controller
     public function index()
     {
         $id = Auth::guard('dosen')->user()->id;
-        $jadwal =  Matakuliah::where('id_dosen', $id)->with(['semester', 'jurusan'])->get();
-        
-        // var_dump($jadwal); die();
+        $jadwal =  Matakuliah::where('id_dosen', $id)->with(['semester', 'jurusan', 'matkul'])->get();
+
+        // return response()->json($jadwal); die();
 
         return view('dosen.index', compact('jadwal'));
     }
@@ -58,29 +59,63 @@ class DosenController extends Controller
     // Absen Process 
     public function absenProcess(Request $request)
     {
-        try {
-                
+       date_default_timezone_set('Asia/Jakarta');
+       $data = date('Y-m-d H:i:s');
+       try {
+
             $id_dosen = Auth::guard('dosen')->user()->id;
+            $matkul = $request->input('id_jadwal');
+            if ($request->keterangan === "izin") {
+                $absen = array(
+                    'id_jadwal' => $request->input('id_jadwal'),
+                    'id_dosen' => $id_dosen,
+                    'alesan' => $request->input('alesan'),
+                    'keterangan' => $request->input('keterangan'),
+                    'tanggal' => date('Y-m-d'),
+                    'jam_masuk' => $data,
+                    'jam_keluar' => $data,
 
-            $absen = array(
-                'id_dosen' => $id_dosen,
-                'id_jadwal' => $request->input('id_jadwal'),
-                'alesan' => $request->input('alesan'),
-                'keterangan' => $request->input('keterangan'),
-                'tanggal' => date('Y-m-d'),
-                'jam_masuk' => date('Y-m-d h:i:s'),
-                'jam_keluar' => date('Y-m-d h:i:s'),
-                'created_at' => date('Y-m-d h:i:s'),
-                'updated_at' => date('Y-m-d h:i:s')
-            );
 
-            DB::table('absen')->insert($absen);
+                );
+                DB::table('absen')->insert($absen);
+                return redirect()->route('dosen.index')->with('izin', 'Absen Izin Sudah Dikirim!!');
+            } else {
+                $absen = array(
+                    'id_jadwal' => $request->input('id_jadwal'),
+                    'id_dosen' => $id_dosen,
+                    'alesan' => $request->input('alesan'),
+                    'keterangan' => $request->input('keterangan'),
+                    'tanggal' => date('Y-m-d'),
+                    'jam_masuk' => $data,
 
-            return redirect()->back()->with('sukses_absen', 'Data Berhasil Ditambahkan!!');
 
+                );
+                $in_absen = Absen::create($absen);
+                    // dd($in_absen);
+                $data_absen = Absen::findOrFail($in_absen->id);
+                $jadwal = Matakuliah::findOrFail($matkul);
+                $materi = Materi::all();
+                Session::flash('success', 'Absen Berhasil Di Kirim !!');
+                return view('dosen.absen-kelas', compact('jadwal', 'materi', 'data_absen'))->with('create', 'Data Berhasil Ditambahkan!!');
+            }
         } catch (Exception $e) {
-            print_r($e);
+        print_r($e);
         }
+    }
+
+    // Update Absen
+    public function update_absen($id)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $waktu = date('Y-m-d H:i:s');
+        $data = Absen::findOrFail($id);
+
+        $data->update([
+
+            'jam_keluar' => $waktu
+
+        ]);
+        return redirect()->route('dosen.index')->with('izin', 'Absen Izin Sudah Dikirim!!');
     }
 
     /**

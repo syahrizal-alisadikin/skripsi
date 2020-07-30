@@ -13,6 +13,12 @@
             
         </div>
         @endif
+        @if (session('izin'))
+        <div class="alert alert-primary">
+            {{ session('izin') }}
+            
+        </div>
+        @endif
         
         <div class="card mb-4">
             <div class="card-header d-flex">
@@ -29,12 +35,13 @@
                         <tr>
                             <th>No</th>
                             <th>Matakuliah</th>
+                            <th>Kode</th>
                             <th>Sks </th>
                             <th>Hari</th>
                             <th>Jam Mulai</th>
                             <th>Jam Selesai</th>
                             <th>Sesi</th>
-                            <th></th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     
@@ -42,9 +49,10 @@
                         <?php $i = 1?>
                         @foreach ($jadwal as $item)
                         <tr>
-                            <td>{{$item->kode_matkul}}</td>
-                            <td>{{$item->name}}</td>
-                            <td>{{$item->sks}}</td>
+                            <td>{{ $i++ }}</td>
+                            <td>{{ $item->matkul->kode }}</td>
+                            <td>{{$item->matkul->nama}}</td>
+                            <td>{{$item->matkul->sks}}</td>
                             <td>{{$item->hari}}</td>
                             <td>{{$item->jam_mulai}}</td>
                             <td>{{$item->jam_selesai}}</td>
@@ -53,8 +61,6 @@
                         </tr>
                         <?php $i++ ?>
                         @endforeach
-                        
-                        
                     </tbody>
                 </table>
             </div>

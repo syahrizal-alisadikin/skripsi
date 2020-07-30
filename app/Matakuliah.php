@@ -9,7 +9,7 @@ class Matakuliah extends Model
 {
     use SoftDeletes;
     protected $table = "jadwal";
-    // protected $fillable = ['name', 'kode_matkul', 'id_dosen', 'jenis_kelas', 'hari', 'jam_mulai', 'jam_selesai'];
+    protected $fillable = ['name', 'kode_matkul', 'id_dosen', 'jenis_kelas', 'hari', 'jam_mulai', 'jam_selesai'];
 
     public function dosen()
     {
@@ -24,5 +24,10 @@ class Matakuliah extends Model
     public function jurusan()
     {
         return $this->belongsTo(Jurusan::class, 'id_jurusan', 'id');
+    }
+
+    public function matkul()
+    {
+        return $this->belongsTo(NamaMatkul::class, 'id_matkul', 'id');
     }
 }
