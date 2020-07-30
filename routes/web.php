@@ -28,8 +28,7 @@ Route::get('/tatusaha', 'TataUsaha\TataUsahaController@index')->name('home');
 Route::prefix('admin')
     ->namespace('TataUsaha')
     ->group(function () {
-        Route::get('/', 'TataUsahaController@index')
-            ->name('dashboard');
+        Route::get('/', 'TataUsahaController@index')->name('dashboard');
 
         Route::resource('admin', 'TataUsahaController');
         Route::resource('tu-dosen', 'DosenController');
@@ -37,6 +36,7 @@ Route::prefix('admin')
         Route::resource('semester', 'SemesterController');
         Route::resource('tu-mahasiswa', 'MahasiswaController');
         Route::resource('matakuliah', 'MatakuliahController');
+        Route::resource('matkul', 'MatkulController'); // Controller Table Mata Kuliah
 
         // Absensi Dosen
         Route::get('/absen-dosen', 'DosenController@absenDosen')->name('absen.dosen');
@@ -63,5 +63,5 @@ Route::prefix('dosen')->namespace('Dosen')
         Route::get('/upload/{file}', 'DosenController@fileMateri')->name('materi.file');
 
         // Absen 
-        Route::resource('absensi', 'AbsenController');
+        // Route::resource('absensi', 'AbsenController');
     });

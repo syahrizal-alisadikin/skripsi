@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\TataUsaha;
 
-use App\Jurusan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DB;
+use Session;
 
-class JurusanController extends Controller
+class MatkulController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,8 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusan = Jurusan::all();
-        return view('tu.jurusan.index', compact('jurusan'));
+        $data = DB::table('mata_kuliah')->get();
+        return view('tu.pelajaran.index', compact('data'));
     }
 
     /**
@@ -24,9 +25,9 @@ class JurusanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -37,11 +38,15 @@ class JurusanController extends Controller
      */
     public function store(Request $request)
     {
-        Jurusan::create([
-            'name' => $request->name
-        ]);
+        $insert = array(
+            'kode' => $request->kode,
+            'nama' => $request->nama,
+            'sks' => $request->sks
+        );
 
-        return redirect()->route('jurusan.index')->with('create', 'Data Berhasil Ditambahkan');
+        DB::table('mata_kuliah')->insert($insert);
+
+        return redirect('admin/matkul')->with('sukses', 'Berhasil Menambahkan Data');
     }
 
     /**
@@ -63,9 +68,9 @@ class JurusanController extends Controller
      */
     public function edit($id)
     {
-        $data = Jurusan::findOrFail($id);
+        $data_matkul = DB::table('mata_kuliah')->where('id', $id)->first();
 
-        return view('tu.jurusan.edit_jurusan', compact('data'));
+        return view('tu.pelajaran.matkul_edit', compact('data_matkul'));
     }
 
     /**
@@ -77,18 +82,15 @@ class JurusanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            
-            $data = Jurusan::find($id);
-            $data->name = $request->name;
-            $data->update();
+         $update = array(
+            'nama' => $request->nama,
+            'kode' => $request->kode,
+            'sks' => $request->sks
+        );
 
-            return redirect('/admin/jurusan')->with('create', 'Berhasil Update Jurusan !');
+        DB::table('mata_kuliah')->where('id', $id)->update($update);
 
-        } catch (Exception $e) {
-
-            return redirect('/admin/jurusan')->with('gagal', 'Gagal Update Jurusan !');
-        }
+        return redirect('admin/matkul')->with('sukses', 'Berhasil Update Data');
     }
 
     /**
@@ -99,16 +101,13 @@ class JurusanController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $data = Jurusan::findOrFail($id);
-            $data->delete();
+        $data = DB::table('mata_kuliah')->where('id', $id)->delete();
 
-            return redirect('/admin/jurusan')->with('create', 'Berhasil Delete Jurusan !');
-        
-        } catch (Exception $e) {
+        if ($data === null) {
             
-            return redirect('/admin/jurusan')->with('Gagal', 'Gagal Delete Jurusan !');
+            return redirect('admin/matkul')->with('gagal', 'Gagal Delete Data');
         }
 
+        return redirect('admin/matkul')->with('sukses', 'Berhasil Delete Data');
     }
 }

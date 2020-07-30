@@ -101,8 +101,9 @@ class DosenController extends Controller
      */
     public function destroy($id)
     {
-        $data = Dosen::findOrFail($id);
+        $data = DB::table('dosen')->where('id', $id);
         $data->delete();
+        
         return redirect()->route('tu-dosen.index')->with('create', 'Data Berhasil Dihapus!!');
     }
 

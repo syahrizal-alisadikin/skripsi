@@ -75,7 +75,13 @@ class MahasiswaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $jurusan = Jurusan::all();
+        $semester = Semester::all();
+        $mahasiswa = Mahasiswa::with(['semester', 'jurusan'])->where('mahasiswa.id', $id)->first();
+
+        // return $mahasiswa; die();
+
+        return view('tu.mahasiswa.mahasiswa_edit', compact('mahasiswa', 'semester', 'jurusan'));
     }
 
     /**
@@ -87,7 +93,38 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+
+            if ($request->input('password')) {
+
+                $data = Mahasiswa::find($id);
+                $data->nim = $request->nim;
+                $data->name =  $request->name;
+                $data->id_semester =  $request->semester;
+                $data->id_jurusan =  $request->jurusan;
+                $data->email =  $request->email;
+                // $data->password =  Hash::make($request['password']);
+                $data->alamat =  $request->alamat;
+                $data->update();
+
+                return redirect('admin/tu-mahasiswa')->with('sukses', 'Data Berhasil Di Update');
+            } else{
+
+                $data = Mahasiswa::find($id);
+                $data->nim = $request->nim;
+                $data->name =  $request->name;
+                $data->id_semester =  $request->semester;
+                $data->id_jurusan =  $request->jurusan;
+                $data->email =  $request->email;
+                $data->password =  Hash::make($request['password']);
+                $data->alamat =  $request->alamat;
+
+                return redirect('admin/tu-mahasiswa')->with('sukses', 'Data Berhasil Di Update');
+            }
+
+        } catch (Exception $e) {
+            return redirect('admin/tu-mahasiswa')->with('gagal', 'Data Gagal Di Update');
+        }
     }
 
     /**

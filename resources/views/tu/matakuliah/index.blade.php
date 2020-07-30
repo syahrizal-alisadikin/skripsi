@@ -46,17 +46,17 @@
                                            @foreach ($matakuliah as $item)
                                             <tr>
                                                 <td><?= $i ?></td>
-                                                <td>{{$item->name}}</td>
-                                                <td>{{$item->sks}}</td>
+                                                <td>{{$item->matkul->nama}}</td>
+                                                <td>{{$item->matkul->sks}}</td>
                                                 <td>{{$item->hari}}</td>
                                                 <td>{{$item->jam_mulai}}</td>
                                                 <td>{{$item->jam_selesai}}</td>
                                                 <td>{{$item->dosen->name}}</td>
                                                 <td>{{$item->jenis_kelas}}</td>
                                                 <td class="text-center">
-                                                        <a href="{{route('tu-dosen.edit',$item->id)}}"  class="btn btn-success btn-sm"> Kelas</a>
-                                                        <a href="{{route('tu-dosen.edit',$item->id)}}"  class="btn btn-primary btn-sm">Edit</a>
-                                                        {{-- <form action="{{ route('tu-dosen.destroy', $item->id) }}" method="POST" class="d-inline">
+                                                        <a href="{{route('matakuliah.edit',$item->id)}}"  class="btn btn-success btn-sm"> Kelas</a>
+                                                        <a href="{{route('matakuliah.edit',$item->id)}}"  class="btn btn-primary btn-sm">Edit</a>
+                                                        {{-- <form action="{{ route('matakuliah.destroy', $item->id) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             @method('delete')
 

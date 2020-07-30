@@ -76,6 +76,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Semester
                             </a>
+                            <a class="nav-link" href="{{route('matkul.index')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Mata Kuliah
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">

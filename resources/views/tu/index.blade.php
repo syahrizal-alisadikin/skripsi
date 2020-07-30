@@ -2,62 +2,88 @@
 @section('content')
 
 <main>
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Dashboard</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Admin {{Auth::guard('admin')->user()->name}}</li>
-                        </ol>
-                       @if (session('create'))
-                        <div class="alert alert-primary">
-                            {{ session('create') }}
-                
-                        </div>
-                        @endif
-                                
-                        <div class="card mb-4">
-                            <div class="card-header d-flex">
-                               <div class="data">
-                                    <i class="fas fa-table mr-1"></i>
-                                DataTable Example
-                                </div>
-                                <div class="button ml-auto">
-                                    <a href="#" class="btn btn-success" name="tambah" id="tambah" data-toggle="modal" data-target="#exampleModal">Tambah Admin</a>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Name</th>
-                                                <th>Email</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                       
-                                        <tbody>
-                                           <?php $i = 1; ?>
-                                           @foreach ($data as $item)
-                                               <tr>
-                                                   <td><?= $i?></td>
-                                                    <td>{{$item->name}}</td>
-                                                    <td>{{$item->email}}</td>
-                                                    <td>
-                                                        <a href="#">Edit</a>
-                                                    </td>
-                                               </tr>
-                                               <?php $i++ ?>
-                                           @endforeach
-                                           
-                                           
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
+  <div class="container-fluid">
+    <h1 class="mt-4">Dashboard</h1>
+    <ol class="breadcrumb mb-4">
+      <li class="breadcrumb-item active">Admin {{Auth::guard('admin')->user()->name}}</li>
+    </ol>
+    @if (session('create'))
+    <div class="alert alert-primary">
+      {{ session('create') }}
+
+    </div>
+    @endif
+
+    @if ($message = Session::get('sukses'))
+    <div class="alert alert-primary alert-block">
+      <button type="button" class="close" data-dismiss="alert">×</button> 
+      <strong>{{ $message }}</strong>
+    </div>
+    @endif
+
+    @if ($message = Session::get('gagal'))
+    <div class="alert alert-danger alert-block">
+      <button type="button" class="close" data-dismiss="alert">×</button> 
+      <strong>{{ $message }}</strong>
+    </div>
+    @endif
+
+    @if ($message = Session::get('peringatan'))
+    <div class="alert alert-warning alert-block">
+      <button type="button" class="close" data-dismiss="alert">×</button> 
+      <strong>{{ $message }}</strong>
+    </div>
+    @endif
+
+    <div class="card mb-4">
+      <div class="card-header d-flex">
+       <div class="data">
+        <i class="fas fa-table mr-1"></i>
+        DataTable Example
+      </div>
+      <div class="button ml-auto">
+        <a href="#" class="btn btn-success" name="tambah" id="tambah" data-toggle="modal" data-target="#exampleModal">Tambah Admin</a>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody>
+           <?php $i = 1; ?>
+           @foreach ($data as $item)
+           <tr>
+             <td><?= $i?></td>
+             <td>{{$item->name}}</td>
+             <td>{{$item->email}}</td>
+             <td>
+              <a class="btn btn-sm btn-primary" href="{{ url('admin/admin/' . $item->id . '/edit/') }}">Edit</a>
+              <form action="{{ route('admin.destroy', $item->id) }}" method="POST" class="d-inline">
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn btn-danger btn-sm"  onclick="return confirm('Yakin Data Mau Dihapus??');"> Hapus</button>
+              </form>
+            </td>
+          </tr>
+          <?php $i++ ?>
+          @endforeach
+
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+</main>
 
 
 
@@ -73,30 +99,30 @@
         </button>
       </div>
       <div class="modal-body">
-      <form action="{{route('admin.store')}}" method="POST">
-        @csrf
-        <div class="form-group">
+        <form action="{{route('admin.store')}}" method="POST">
+          @csrf
+          <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" class="form-control" placeholder="Masukan Nama" required>
-        </div>
-        <div class="form-group">
+          </div>
+          <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" class="form-control" placeholder="Masukan Email" required>
-        </div>
-        <div class="form-group">
+          </div>
+          <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Masukan Password" required>
-        </div>
+          </div>
 
-        <div class="form-group">
-        <button type="submit" class="btn btn-success d-block w-100">Tambah Data</button>
+          <div class="form-group">
+            <button type="submit" class="btn btn-success d-block w-100">Tambah Data</button>
 
-        </div>
+          </div>
         </form>
       </div>
       
     </div>
   </div>
 </div>
-    
+
 @endsection

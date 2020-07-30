@@ -91,7 +91,7 @@ class DosenController extends Controller
 
                 );
                 $in_absen = Absen::create($absen);
-                    // dd($in_absen);
+                // dd($in_absen);
                 $data_absen = Absen::findOrFail($in_absen->id);
                 $jadwal = Matakuliah::findOrFail($matkul);
                 $materi = Materi::all();

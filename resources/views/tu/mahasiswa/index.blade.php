@@ -12,6 +12,27 @@
                 
                         </div>
                         @endif
+
+                        @if ($message = Session::get('sukses'))
+                        <div class="alert alert-primary alert-block">
+                          <button type="button" class="close" data-dismiss="alert">×</button> 
+                          <strong>{{ $message }}</strong>
+                        </div>
+                        @endif
+
+                        @if ($message = Session::get('gagal'))
+                        <div class="alert alert-danger alert-block">
+                          <button type="button" class="close" data-dismiss="alert">×</button> 
+                          <strong>{{ $message }}</strong>
+                        </div>
+                        @endif
+
+                        @if ($message = Session::get('peringatan'))
+                        <div class="alert alert-warning alert-block">
+                          <button type="button" class="close" data-dismiss="alert">×</button> 
+                          <strong>{{ $message }}</strong>
+                        </div>
+                        @endif
                                 
                         <div class="card mb-4">
                             <div class="card-header d-flex">
@@ -51,7 +72,6 @@
                                                         <form action="{{ route('tu-mahasiswa.destroy', $item->id) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             @method('delete')
-
                                                             <button type="submit" class="btn btn-danger btn-sm"  onclick="return confirm('Yakin Data Mau Dihapus??');"> Hapus</button>
                                                         </form>
                                                </td>

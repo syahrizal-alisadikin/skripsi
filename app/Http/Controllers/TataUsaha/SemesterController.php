@@ -62,7 +62,8 @@ class SemesterController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Semester::findOrFail($id);
+        return view('tu.semester.semester_edit', compact('data'));
     }
 
     /**
@@ -74,7 +75,15 @@ class SemesterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $data = Semester::find($id);
+            $data->name = $request->name;
+            $data->update();
+            return redirect()->route('semester.index')->with('create', 'Data Berhasil Di Update !!');
+        } catch (Exception $e) {
+
+            return redirect()->route('semester.index')->with('gagal', 'Data Gagal Di Update !!');
+        }
     }
 
     /**
@@ -85,6 +94,9 @@ class SemesterController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Semester::find($id);
+        $data->delete();
+
+         return redirect()->route('semester.index')->with('create', 'Data Berhasil Di Delete !!');
     }
 }

@@ -9,7 +9,10 @@
                        @if (session('create'))
                         <div class="alert alert-primary">
                             {{ session('create') }}
-                
+                        </div>
+                        @elseif(session('gagal'))
+                         <div class="alert alert-danger">
+                            {{ session('gagal') }}
                         </div>
                         @endif
                                 
@@ -41,8 +44,8 @@
                                                    <td><?= $i ?></td>
                                                <td>{{$item->name}}</td>
                                                <td class="text-center">
-                                                    <a href="{{route('jurusan.edit',$item->id)}}"  class="btn btn-primary btn-sm">Edit</a>
-                                                        <form action="{{ route('jurusan.destroy', $item->id) }}" method="POST" class="d-inline">
+                                                    <a href="{{route('semester.edit',$item->id)}}"  class="btn btn-primary btn-sm">Edit</a>
+                                                        <form action="{{ route('semester.destroy', $item->id) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             @method('delete')
 

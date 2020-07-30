@@ -11,6 +11,10 @@
                             {{ session('create') }}
                 
                         </div>
+                        @elseif(session('gagal'))
+                        <div class="alert alert-danger">
+                            {{ session('gagal') }}
+                        </div>
                         @endif
                                 
                         <div class="card mb-4">
