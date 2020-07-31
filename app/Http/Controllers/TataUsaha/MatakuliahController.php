@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Jurusan;
 use App\Matakuliah;
 use App\Semester;
+use App\NamaMatkul;
 use Illuminate\Http\Request;
 
 class MatakuliahController extends Controller
@@ -23,6 +24,7 @@ class MatakuliahController extends Controller
         $dosen = Dosen::all();
         $matakuliah = Matakuliah::with(['semester', 'jurusan', 'dosen', 'matkul'])->get();
         // dd($matakuliah);
+
         return view('tu.matakuliah.index', compact('semester', 'jurusan', 'dosen', 'matakuliah'));
     }
 
@@ -44,29 +46,37 @@ class MatakuliahController extends Controller
      */
     public function store(Request $request)
     {
-        Matakuliah::create([
-            'nama' => $request->name,
-            'kode' => $request->kode_matkul,
-            'sks' => $request->sks,
-            'id_dosen' => $request->dosen,
-            'jenis_kelas' => $request->jenis_kelas,
-            'hari' => $request->hari,
-            'jam_mulai' => $request->mulai,
-            'jam_selesai' => $request->selesai,
-        ]);
+        // Matakuliah::with(['matkul'])->create([
+        //     'nama' => $request->name,
+        //     'kode' => $request->kode_matkul,
+        //     'sks' => $request->sks,
+        //     'id_dosen' => $request->dosen,
+        //     'jenis_kelas' => $request->jenis_kelas,
+        //     'hari' => $request->hari,
+        //     'jam_mulai' => $request->mulai,
+        //     'jam_selesai' => $request->selesai,
+        // ]);
 
-        // $data = new Matakuliah;
-        // $data->matkul->nama = $request->name;
-        // $data->matkul->kode = $request->kode_matkul;
-        // $data->matkul->sks = $request->sks;
-        // $data->id_dosen = $request->dosen;
-        // $data->jenis_kelas = $request->jenis_kelas;
-        // $data->hari = $request->hari;
-        // $data->jam_mulai = $request->mulai;
-        // $data->jam_selesai = $request->selesai;
-        // $data->save();
+        $data = new Matakuliah;
+        $data->id_dosen = $request->dosen;
+        $data->jenis_kelas = $request->jenis_kelas;
+        $data->hari = $request->hari;
+        $data->jam_mulai = $request->mulai;
+        $data->jam_selesai = $request->selesai;
+        $save = $data->save();
 
-        return redirect()->route('matakuliah.index')->with('create', 'Data Berhasil Ditambah');
+        if ($save) {
+            $save2 = new NamaMatkul;
+            $save2->nama = $request->name;
+            $save2->kode = $request->kode_matkul;
+            $save2->sks = $request->sks;
+            $save2->save();
+
+            return redirect()->route('matakuliah.index')->with('create', 'Data Berhasil Ditambah');
+        } else {
+            echo "gagal";
+        }
+
     }
 
     /**

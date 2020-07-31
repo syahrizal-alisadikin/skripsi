@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Dosen;
 use Illuminate\Support\Facades\Hash;
 use DB;
-
+use PDF;
 class DosenController extends Controller
 {
     /**
@@ -146,48 +146,49 @@ class DosenController extends Controller
     // Cetak PDF 1 Bulan
     public function cetakPDF(Request $req, $id_dosen)
     {
-         $start = $req->get('tanggal_start');
-         $end = $req->get('tanggal_end');
+       $start = $req->get('tanggal_start');
+       $end = $req->get('tanggal_end');
 
-         $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'absen.*', 'mata_kuliah.*'];
+       $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'absen.*', 'mata_kuliah.*'];
 
-         $cetak_detail_dosen = Dosen::select($select)
-         ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
-         ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
-         ->join('mata_kuliah', 'jadwal.id_matkul', '=', 'mata_kuliah.id')
-         ->where('dosen.id', $id_dosen)
-         ->whereBetween('absen.tanggal', [$start, $end])
-         ->get();
+       $dosen = Dosen::select(['*'])->where('id', $id_dosen)->first();
 
-        // return resposen 
-        return response()->json([
-            'start' => $start, 
-            'end' => $end, 
-            'data' => $cetak_detail_dosen
-        ]);
+       $cetak_detail_dosen = Dosen::select($select)
+       ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
+       ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
+       ->join('mata_kuliah', 'jadwal.id_matkul', '=', 'mata_kuliah.id')
+       ->where('dosen.id', $id_dosen)
+       ->orderBy('absen.tanggal', 'desc')
+       ->whereBetween('absen.tanggal', [$start, $end])
+       ->get();
+
+       $pdf = PDF::loadview('tu.absen.laporan_absen_perbulan',['data'=>$cetak_detail_dosen, 'dosen' => $dosen]);
+       return $pdf->stream(); 
+       
     }
 
     // Cetak PDF Perhari
     public function cetakPDFPerhari(Request $req, $id_dosen)
     {
 
-       $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'absen.*', 'mata_kuliah.*', 'absen.id as id_absen'];
+     $select = ['dosen.name as nama_dosen', 'dosen.kode', 'dosen.id as id_dosen', 'dosen.*', 'jadwal.*', 'absen.*', 'mata_kuliah.*', 'absen.id as id_absen'];
 
        // Get Tanggal Start
-       $start = $req->get('tanggal_start');
+     $start = $req->get('tanggal_start');
 
+     $dosen = Dosen::select(['*'])->where('id', $id_dosen)->first();
 
-       $detail_dosen_perhari = Dosen::select($select)
-       ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
-       ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
-       ->join('mata_kuliah', 'jadwal.id_matkul', '=', 'mata_kuliah.id')
-       ->where('absen.id_dosen', $id_dosen)
+     $detail_dosen_perhari = Dosen::select($select)
+     ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
+     ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
+     ->join('mata_kuliah', 'jadwal.id_matkul', '=', 'mata_kuliah.id')
+     ->where('absen.id_dosen', $id_dosen)
+     ->orderBy('absen.tanggal', 'desc')
        // ->where('absen.id', $req->input('id_absen'))
-       ->where('absen.tanggal', $start)
-       ->get();
+     ->where('absen.tanggal', $start)
+     ->get();
 
-        return response()->json([ 
-            'data' => $detail_dosen_perhari
-        ]);
+     $pdf = PDF::loadview('tu.absen.laporan_absen_perhari',['data_perhari' => $detail_dosen_perhari, 'dosen' => $dosen, 'start' => $start]);
+     return $pdf->stream(); 
     }
 }

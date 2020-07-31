@@ -83,10 +83,11 @@ class TataUsahaController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            if ($request->input('password')) {
+            if($request->input('password')) {
                 $data = Admin::find($id);
                 $data->email = $request->email;
                 $data->name = $request->name;
+                $data->password = Hash::make($request->password);
                 $data->update();
                 Session::flash('sukses', 'Berhasil Update Data');
                 return redirect('admin');
@@ -94,7 +95,6 @@ class TataUsahaController extends Controller
               $data = Admin::find($id);
               $data->email = $request->email;
               $data->name = $request->name;
-              $data->password = Hash::make($request->password);
               $data->update();
               Session::flash('sukses', 'Berhasil Update Data');
               return redirect('admin');
