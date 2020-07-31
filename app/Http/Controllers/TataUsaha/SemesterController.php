@@ -79,6 +79,7 @@ class SemesterController extends Controller
             $data = Semester::find($id);
             $data->name = $request->name;
             $data->update();
+            
             return redirect()->route('semester.index')->with('create', 'Data Berhasil Di Update !!');
         } catch (Exception $e) {
 

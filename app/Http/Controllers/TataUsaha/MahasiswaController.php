@@ -103,9 +103,11 @@ class MahasiswaController extends Controller
                 $data->id_semester =  $request->semester;
                 $data->id_jurusan =  $request->jurusan;
                 $data->email =  $request->email;
-                $data->password =  Hash::make($request['password']);
+                $data->password =  Hash::make($request->password);
                 $data->alamat =  $request->alamat;
                 $data->update();
+
+                // echo "berhasil";
 
                 return redirect('admin/tu-mahasiswa')->with('sukses', 'Data Berhasil Di Update');
             } else{
@@ -116,8 +118,8 @@ class MahasiswaController extends Controller
                 $data->id_semester =  $request->semester;
                 $data->id_jurusan =  $request->jurusan;
                 $data->email =  $request->email;
-                // $data->password =  Hash::make($request['password']);
                 $data->alamat =  $request->alamat;
+                $data->update();
 
                 return redirect('admin/tu-mahasiswa')->with('sukses', 'Data Berhasil Di Update');
             }

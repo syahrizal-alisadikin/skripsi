@@ -35,7 +35,11 @@
                   <label for="semester">Semester</label>
                   <select name="semester" id="semester" class="form-control">
                     @foreach ($semester as $item)
-                    <option value="{{$item->id}}">{{$item->name}}</option>
+                    <option value="{{ $item->id }}"
+                      @if ($item->id == old('semester', $mahasiswa->id_semester))
+                      selected="selected"
+                      @endif
+                      >{{ $item->name }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -43,7 +47,11 @@
                   <label for="jurusan">Jurusan</label>
                   <select name="jurusan" id="jurusan" class="form-control">
                     @foreach ($jurusan as $item)
-                    <option value="{{$item->id}}">{{$item->name}}</option>
+                     <option value="{{ $item->id }}"
+                      @if ($item->id == old('jurusan', $mahasiswa->id_jurusan))
+                      selected="selected"
+                      @endif
+                      >{{ $item->name }}</option>
                     @endforeach
                   </select>
                 </div>

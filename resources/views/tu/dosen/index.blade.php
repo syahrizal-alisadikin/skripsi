@@ -41,13 +41,12 @@
                                                 <tr>
                                                     <td><?= $i;?></td>
                                                     <td>{{$item->name}}</td>
-                                                    <td>{{$item->email}}</td>
+                                                    <td>{{$item->kode}}</td>
                                                     <td class="text-center">
                                                         <a href="{{route('tu-dosen.edit',$item->id)}}"  class="btn btn-primary btn-sm">Edit</a>
                                                         <form action="{{ route('tu-dosen.destroy', $item->id) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
-
                                                             <button type="submit" class="btn btn-danger btn-sm"  onclick="return confirm('Yakin Data Mau Dihapus??');"> Hapus</button>
                                                         </form>
                                                     </td>
