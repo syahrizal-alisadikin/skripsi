@@ -12,7 +12,7 @@ class Dosen extends Authenticatable
 {
     use Notifiable;
 
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $table = "dosen";
     protected $primaryKey = "id";
     protected $fillable = ['name', 'kode', 'password'];

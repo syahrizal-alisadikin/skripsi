@@ -22,7 +22,7 @@
         
         <div class="card mb-4">
             <div class="card-header d-flex">
-             <div class="data">
+               <div class="data">
                 <i class="fas fa-table mr-1"></i>
                 Jadwal Dosen
             </div>
@@ -57,7 +57,12 @@
                             <td>{{$item->jam_mulai}}</td>
                             <td>{{$item->jam_selesai}}</td>
                             <td>{{$item->jenis_kelas}}</td>
-                            <td><a href="{{route('dosen.show',$item->id)}}" class="btn btn-success">Masuk Kelas</a></td>
+                            <td>
+                                <form action="{{route('dosen.show',$item->id)}}" method="GET">
+                                    <input type="hidden" name="id_matkul" value="{{ $item->id_matkul }}">
+                                    <button class="btn btn-success">Masuk Kelas</button>
+                                </form>
+                            </td>
                         </tr>
                         <?php $i++ ?>
                         @endforeach
@@ -109,4 +114,26 @@
 </div>
 </div>
 
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+
+    $(document).ready(function() {
+    // $("#absen").submit(function (e) {
+
+    //         //stop submitting the form to see the disabled button effect
+    //         e.preventDefault();
+
+    //         //disable the submit button
+    //         $("#keterangan").attr("disabled", true);
+
+    //         //disable a normal button
+    //         $("#buttonReset").attr("disabled", true);
+
+    //         return true;
+    // });
+})
+
+</script>
 @endsection

@@ -76,74 +76,81 @@
                                     <tr>
                                         <td colspan="4" class="text-center">Belum Ada Materi <br>
 
-                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadFile">
-                                          Upload File
-                                      </button>
-                                  </td>
-                              </tr>
-                              @endforelse
-                          </tbody>
-                      </table>
+                                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadFile">
+                                              Upload File
+                                          </button>
+                                      </td>
+                                  </tr>
+                                  @endforelse
+                              </tbody>
+                          </table>
+                      </div>
                   </div>
               </div>
           </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                @if ($message = Session::get('sukses_absen'))
-                <div class="alert alert-success alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
-                    <strong>{{ $message }}</strong>
+          <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    @if ($message = Session::get('sukses_absen'))
+                    <div class="alert alert-success alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ $message }}</strong>
+                    </div>
+                    @endif
+
+                    @if ($message = Session::get('gagal_absen'))
+                    <div class="alert alert-danger alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ $message }}</strong>
+                    </div>
+                    @endif
+
+                    @if ($message = Session::get('peringatan_absen'))
+                    <div class="alert alert-warning alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ $message }}</strong>
+                    </div>
+                    @endif
+                    @php
+                    $absen = App\Absen::where('id_jadwal', $data->id)->where('id_dosen',Auth::guard('dosen')->user()->id)->count();
+
+                    @endphp
+
+                    {{--Pengecekan Absen Dosen --}}
+                    @if($absen === 1) 
+                    <div class="alert alert-warning alert-block">
+                        <button type="button" class="close" data-dismiss="alert"></button> 
+                        <strong>Upss !!, Anda Sudah Absen</strong><br>
+                    </div>
+                    <a class="btn btn-primary btn-sm btn-block" href="{{ route('dashboarddosen')}}">Kembali Ke Kelas</a>
+
+                    @else
+                    <form id="absen" action="{{ route('process.absen') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <input type="text" id="matkul" class="form-control" value="{{$data->matkul->nama}}">
+                            <input type="hidden" name="id_jadwal" id="id_jadwal" class="form-control" value="{{$data->id}}">
+                        </div>
+                        <div class="form-group">
+                            <select name="keterangan" id="keterangan" class="form-control">
+                                <option value="hadir">Hadir</option>
+                                <option value="izin">Izin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="alesan" id="alesan" class="form-control" cols="30" rows="3" placeholder="keterangan"></textarea>
+                            <small style="color: red;">* Kosongkan Jika Hadir</small>
+                        </div>
+                        <div>
+                            <button id="buttonReset" type="submit" class="btn btn-success d-block w-100">Kirim</button>
+                        </div>
+                    </form>
+                    @endif
+
                 </div>
-                @endif
-
-                @if ($message = Session::get('gagal_absen'))
-                <div class="alert alert-danger alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
-                    <strong>{{ $message }}</strong>
-                </div>
-                @endif
-
-                @if ($message = Session::get('peringatan_absen'))
-                <div class="alert alert-warning alert-block">
-                    <button type="button" class="close" data-dismiss="alert">×</button> 
-                    <strong>{{ $message }}</strong>
-                </div>
-                @endif
-                @php
-                $absen = App\Absen::where('id_jadwal', $data->id)->where('id_dosen',Auth::guard('dosen')->user()->id)->count();
-
-                @endphp
-
-
-                <form action="{{ route('process.absen') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <input type="text" id="matkul" class="form-control" value="{{$data->matkul->nama}}">
-                        <input type="hidden" name="id_jadwal" id="id_jadwal" class="form-control" value="{{$data->id}}">
-                    </div>
-                    <div class="form-group">
-                        <select name="keterangan" id="keterangan" class="form-control">
-                            <option value="hadir">Hadir</option>
-                            <option value="izin">Izin</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="alesan" id="alesan" class="form-control" cols="30" rows="3" placeholder="keterangan"></textarea>
-                        <small style="color: red;">* Kosongkan Jika Hadir</small>
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-success d-block w-100">Kirim</button>
-                    </div>
-                </form>
-
-
-
             </div>
         </div>
     </div>
-</div>
 </div>
 </main>
 
@@ -216,3 +223,4 @@
 </div>
 
 @endsection
+

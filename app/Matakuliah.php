@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Matakuliah extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $table = "jadwal";
     protected $fillable = ['name', 'kode', 'id_dosen', 'jenis_kelas', 'hari', 'jam_mulai', 'jam_selesai'];
 

@@ -27,12 +27,14 @@
                 <form method="GET" action="{{ url('/admin/absen-dosen/detail/cetak/' . $dosen->id) }}">
                   <div class="form-group">
                     <div class="ml-auto">
-                      <input class="form-control" type="date" name="tanggal_start" value="{{ date('Y-m-d') }}">
+                      <input class="form-control" type="date" name="tanggal_start">
+                      <small style="color: red">* Tanggal Mulai</small>
                     </div>
                   </div>
                   <div class="form-group">                
                     <div class="ml-auto">
                       <input class="form-control" type="date" name="tanggal_end">
+                      <small style="color: red">* Tanggal Mulai</small>
                     </div>
                   </div>
                   <div class="form-group">

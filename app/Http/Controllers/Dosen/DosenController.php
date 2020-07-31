@@ -150,15 +150,21 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $req, $id)
     {
         $data = Matakuliah::findOrFail($id);
         $materi = Materi::all();
-        return view('dosen.lihat-kelas', compact('data', 'materi'));
+
+        // Check Jika Dosen 
+        $absen = Absen::where('id_jadwal', $req->id_matkul)->where('id_dosen', Auth::guard('dosen')->user()->id)->count();
+
+        // return $absen; die();
+
+        return view('dosen.lihat-kelas', compact('data', 'materi', 'absen'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified resource
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
