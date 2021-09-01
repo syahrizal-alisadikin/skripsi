@@ -110,6 +110,7 @@
                         <button type="button" class="close" data-dismiss="alert">×</button> 
                         <strong>{{ $message }}</strong>
                     </div>
+                    
                     @endif
                    @php
                        $absen = App\Absen::where('id_jadwal', $jadwal->id)->where('id_dosen',Auth::guard('dosen')->user()->id)->get();

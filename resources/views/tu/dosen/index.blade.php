@@ -31,6 +31,7 @@
                                                 <th>No</th>
                                                 <th>Nama Dosen</th>
                                                 <th>Kode Dosen</th>
+                                                <th>Status Dosen</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
                                         </thead>
@@ -42,6 +43,7 @@
                                                     <td><?= $i;?></td>
                                                     <td>{{$item->name}}</td>
                                                     <td>{{$item->kode}}</td>
+                                                    <td>{{$item->status}}</td>
                                                     <td class="text-center">
                                                         <a href="{{route('tu-dosen.edit',$item->id)}}"  class="btn btn-primary btn-sm">Edit</a>
                                                         <form action="{{ route('tu-dosen.destroy', $item->id) }}" method="POST" class="d-inline">
@@ -89,10 +91,12 @@
             <input type="text" id="email" name="email" class="form-control" placeholder="Masukan Kode Dosen" required>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Masukan Password" required>
+            <label for="email">Status Dosen</label>
+            <select class="form-control" name="status">
+                <option value="tetap">Tetap</option>
+                <option value="honorer">Honorer</option>
+            </select>
         </div>
-
         <div class="form-group">
         <button type="submit" class="btn btn-success d-block w-100">Tambah Data</button>
 

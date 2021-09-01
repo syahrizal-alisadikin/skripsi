@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Session;
+use App\Matakuliah;
 
 use Illuminate\Http\Request;
 
@@ -32,7 +33,13 @@ class LoginController extends Controller
         // Dosen Request
         $dosen = [
             'kode' => $request->kode,
-            'password' => $request->password
+            'password' => 29081997
+        ];
+
+        // Mahasiwa Request
+        $mahasiswa = [
+            'nim'      => $request->nim,
+            'password' => 'admin123'
         ];
 
         // Admin Request
@@ -43,11 +50,25 @@ class LoginController extends Controller
         
         // Passwordnya pake bcrypt
         if (Auth::guard('admin')->attempt($admin)) {
+
             return redirect()->intended('/admin');
-            // die();
         } elseif (Auth::guard('dosen')->attempt($dosen)) {
-            return redirect()->intended('/dosen');
-        } else {
+
+           // Check Dosen Ada Jadwal Atau Tidak
+           $id = Auth::guard('dosen')->user()->id;
+           $jadwal =  Matakuliah::where('id_dosen', $id)->with(['semester', 'jurusan', 'matkul'])->count();
+
+           // Jika jadwal dosen kosong
+           if ($jadwal === 0) { 
+               Session::flash('jadwal_dosen', 'Maaf Anda Tidak Ada Jadwal !');
+               return redirect('/');
+           }
+
+           return redirect()->intended('/dosen');
+
+        }elseif (Auth::guard('mahasiswa')->attempt($mahasiswa)) {
+           return redirect()->intended('/mahasiswa');
+        }else {
             Session::flash('gagal', 'Login Invalid !');
             return redirect('/');
         }
@@ -60,6 +81,8 @@ class LoginController extends Controller
         
         } elseif (Auth::guard('dosen')->check()) {
             Auth::guard('dosen')->logout();
+        }elseif (Auth::guard('mahasiswa')->check()) {
+            Auth::guard('mahasiswa')->logout();
         }
 
         return redirect('/');

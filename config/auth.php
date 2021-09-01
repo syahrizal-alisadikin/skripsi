@@ -66,6 +66,15 @@ return [
             'driver' => 'token',
             'provider' => 'dosen',
         ],
+        'mahasiswa' => [
+            'driver' => 'session',
+            'provider' => 'mahasiswa',
+        ],
+
+        'mahasiswa-api' => [
+            'driver' => 'token',
+            'provider' => 'mahasiswa',
+        ],
     ],
 
     /*
@@ -105,6 +114,11 @@ return [
         'dosen' => [
             'driver' => 'eloquent',
             'model' => App\Dosen::class,
+        ],
+
+        'mahasiswa' => [
+            'driver' => 'eloquent',
+            'model' => App\Mahasiswa::class,
         ],
     ],
 

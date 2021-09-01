@@ -35,6 +35,7 @@
                                                 <th> Mulai</th>
                                                 <th> Selesai</th>
                                                 <th>Pengajar</th>
+                                                <th>Status Dosen</th>
                                                 <th>Sesi</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
@@ -52,6 +53,7 @@
                                                 <td>{{$item->jam_mulai}}</td>
                                                 <td>{{$item->jam_selesai}}</td>
                                                 <td>{{$item->dosen->name}}</td>
+                                                <td>{{$item->dosen->status}}</td>
                                                 <td>{{$item->jenis_kelas}}</td>
                                                 <td class="text-center">
                                                         <a href="{{route('matakuliah.edit',$item->id)}}"  class="btn btn-primary btn-sm">Edit</a>

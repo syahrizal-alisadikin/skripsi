@@ -34,6 +34,12 @@
             <strong>{{ $message }}</strong>
           </div>
           @endif
+          @if ($message = Session::get('jadwal_dosen'))
+          <div class="alert alert-warning alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <strong>{{ $message }}</strong>
+          </div>
+          @endif
           <div class="row align-item-center row-login">
             <div class="col-lg-6 text-center" style="">
               <h3>Universitas <br> Satya Negara Indonesia</h3>
@@ -49,6 +55,9 @@
                 <li class="nav-item">
                   <a class="nav-link" data-toggle="tab" href="#two">Admin</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#tree">Mahasiswa</a>
+                </li>
               </ul>
               <div class="tab-content pt-3" id="myTabContent">
                 <div class="tab-pane fade active show" id="one">
@@ -63,15 +72,6 @@
                       </span>
                       @enderror
                     </form-group>
-                    <form-group>
-                      <label> Password</label>
-                      <input type="password" class="form-control w-75  @error('password') is-invalid @enderror" name="password" id="password" />
-                      @error('password')
-                      <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                      @enderror
-                    </form-group>
                     <div class="form-check mt-3" id="ceklis">
                       <input class="form-check-input" type="checkbox" value="" id="ceklis"  >
                       <label class="form-check-label" for="ceklis">
@@ -79,7 +79,7 @@
                       </label>
                     </div>
                     <button type="submit" id="login" disabled class="btn btn-success d-block w-75 mt-4"
-                    >Login</button>
+                    >Masuk</button>
                   </form>
                 </div>
                 <div class="tab-pane fade" id="two">
@@ -98,6 +98,28 @@
                       <label> Password</label>
                       <input type="password" class="form-control w-75  @error('password') is-invalid @enderror" name="password" id="password" />
                       @error('password')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                      @enderror
+                    </form-group>
+                    <!--<div class="form-check mt-3" id="ceklis_admin">-->
+                    <!--  <input class="form-check-input" type="checkbox" value="" id="ceklis_admin"  >-->
+                    <!--  <label class="form-check-label" for="ceklis_admin">-->
+                    <!--    Ambil Lpk-->
+                    <!--  </label>-->
+                    <!--</div>-->
+                    <button type="submit" id="login_admin"  class="btn btn-success d-block w-75 mt-4"
+                    >Login</button>
+                  </form>
+                </div>
+                <div class="tab-pane fade" id="tree">
+                  <form action="/login" method="POST" class="mt-3">
+                    @csrf
+                    <form-group>
+                      <label>NIM</label>
+                      <input type="text" class="form-control w-75 @error('nim') is-invalid @enderror" name="nim" id="nim" />
+                      @error('email')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                       </span>

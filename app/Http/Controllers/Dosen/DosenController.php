@@ -25,8 +25,9 @@ class DosenController extends Controller
     {
         $id = Auth::guard('dosen')->user()->id;
         $jadwal =  Matakuliah::where('id_dosen', $id)->with(['semester', 'jurusan', 'matkul'])->get();
+        // $absen = Absen::where('id_jadwal', $request->id_jadwal)->where('id_dosen', $request->id_dosen)->count();
 
-        // return response()->json($jadwal); die();
+        // return $jadwal; die();
 
         return view('dosen.index', compact('jadwal'));
     }
@@ -82,13 +83,11 @@ class DosenController extends Controller
                 $absen = array(
                     'id_jadwal' => $request->input('id_jadwal'),
                     'id_dosen' => $id_dosen,
-                    'alesan' => $request->input('alesan'),
-                    'keterangan' => $request->input('keterangan'),
+                    'keterangan' => 'hadir',
+                    'alesan' => null,
                     'tanggal' => date('Y-m-d'),
                     'jam_masuk' => $data,
                     'jam_keluar' => $data,
-
-
                 );
                 DB::table('absen')->insert($absen);
                 return redirect()->route('dosen.index')->with('izin', 'Absen Izin Sudah Dikirim!!');
@@ -100,8 +99,6 @@ class DosenController extends Controller
                     'keterangan' => $request->input('keterangan'),
                     'tanggal' => date('Y-m-d'),
                     'jam_masuk' => $data,
-
-
                 );
                 $in_absen = Absen::create($absen);
                 // dd($in_absen);
@@ -220,10 +217,11 @@ class DosenController extends Controller
         return "Data File Tidak Di Temukan";
     }
 
+    // Absen Dosen
     public function absen_dosen()
     {
         $dosen = Absen::with('jadwal.matkul')->get();
-        // dd($dosen);
+        // return $dosen; die();
         return view('dosen.absen_dosen', compact('dosen'));
     }
 }

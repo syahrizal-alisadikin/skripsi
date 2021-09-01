@@ -22,7 +22,7 @@
         
         <div class="card mb-4">
             <div class="card-header d-flex">
-             <div class="data">
+               <div class="data">
                 <i class="fas fa-table mr-1"></i>
                 Jadwal Dosen
             </div>
@@ -38,9 +38,10 @@
                             <th>Kode</th>
                             <th>Sks </th>
                             <th>Hari</th>
-                            <th>Jam Mulai</th>
-                            <th>Jam Selesai</th>
+                            <th style="width: 20px;">Jam Mulai</th>
+                            <th style="width: 20px;">Jam Selesai</th>
                             <th>Sesi</th>
+                            <th>Jurusan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -51,13 +52,21 @@
                         <tr>
                             <td>{{ $i++ }}</td>
                             <td>{{$item->matkul->nama}}</td>
-                            <td>{{ $item->matkul->kode }}</td>
+                            <td>{{$item->matkul->kode }}</td>
                             <td>{{$item->matkul->sks}}</td>
                             <td>{{$item->hari}}</td>
                             <td>{{$item->jam_mulai}}</td>
                             <td>{{$item->jam_selesai}}</td>
                             <td>{{$item->jenis_kelas}}</td>
-                            <td><a href="{{route('dosen.show',$item->id)}}" class="btn btn-success">Masuk Kelas</a></td>
+                            <td>{{$item->jurusan->name}}</td>
+                            <td align="center">
+                                <a href="{{route('dosen.show',$item->id)}}" class="btn btn-success btn-sm">Masuk Kelas</a>
+                                {{-- <form method="POST" action="{{ route('process.absen') }}">
+                                    @csrf
+                                    <input type="hidden" name="id_jadwal" value="{{ $item->id }}">
+                                    <button type="submit" class="btn btn-primary btn-sm">Absen</button>
+                                </form> --}}
+                            </td>
                         </tr>
                         <?php $i++ ?>
                         @endforeach
@@ -70,6 +79,38 @@
 </main>
 
 
+
+<div class="modal fade" id="absenModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Absen Dosen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      <form action="{{route('dosen.store')}}" method="POST">
+        @csrf
+        <div class="form-group">
+            <input type="text" id="matkul" class="form-control" value="">
+            <input type="hidden" name="id_jadwal" id="id_jadwal" class="form-control" value="">
+        </div>
+        <div class="form-group">
+            <select name="keterangan" id="keterangan" class="form-control">
+                <option value="hadir">Hadir</option>
+                <option value="izin">Izin</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <textarea name="alesan" id="alesan" class="form-control" cols="30" rows="3" placeholder="keterangan"></textarea>
+            <small style="color: red;">* Kosongkan Jika Hadir</small>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success d-block w-100">Absen Dosen</button>
+        </div>
+    </form>
+</div>
 
 
 <!-- Modal -->

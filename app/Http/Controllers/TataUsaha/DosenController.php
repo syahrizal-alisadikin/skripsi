@@ -44,7 +44,8 @@ class DosenController extends Controller
         Dosen::create([
             'name' => $request->name,
             'kode' => $request->email,
-            'password' => Hash::make($request['password']),
+            'status' => $request->status,
+            'password' => Hash::make(29081997),
         ]);
         return redirect()->route('tu-dosen.index')->with('create', 'Data Berhasil Ditambahkan!!');
     }
@@ -85,10 +86,12 @@ class DosenController extends Controller
         if ($request->password) {
             $dosen->name = $request->name;
             $dosen->kode = $request->kode;
-            $dosen->password = Hash::make($request['password']);
+            $dosen->status = $request->status;
+            $dosen->password = Hash::make(29081997);
         } else {
             $dosen->name = $request->name;
             $dosen->kode = $request->kode;
+            $dosen->status = $request->status;
         }
         $dosen->update();
         return redirect()->route('tu-dosen.index')->with('create', 'Data Berhasil Diupdate!!');
@@ -153,6 +156,8 @@ class DosenController extends Controller
 
         $dosen = Dosen::select(['*'])->where('id', $id_dosen)->first();
 
+        // \DB::enableQueryLog();
+
         $cetak_detail_dosen = Dosen::select($select)
             ->join('absen', 'dosen.id', '=', 'absen.id_dosen')
             ->join('jadwal', 'absen.id_jadwal', '=', 'jadwal.id')
@@ -161,6 +166,8 @@ class DosenController extends Controller
             ->orderBy('absen.tanggal', 'desc')
             ->whereBetween('absen.tanggal', [$start, $end])
             ->get();
+
+        // dd(\DB::getQueryLog()); die();
 
         $pdf = PDF::loadview('laporan_absen.bulanan_pdf', ['data' => $cetak_detail_dosen, 'dosen' => $dosen]);
         return $pdf->stream();

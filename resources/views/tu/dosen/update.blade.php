@@ -31,11 +31,13 @@
                                                 <input type="text" name="kode" id="kode" class="form-control" value="{{$data->kode}}">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="password">Password</label>
-                                                <input type="password" name="password" id="password" class="form-control" >
-                                                <p class="text-muted">*kosongkan Jika Tidak diGanti!!</p>
+                                                    <label for="kode">Status Dosen</label>
+                                                    <select class="form-control" name="status">
+                                                        <option value="{{$data->status}}">{{$data->status}}</option>
+                                                        <option value="tetap">tetap</option>
+                                                        <option value="honorer">honorer</option>
+                                                    </select>
                                                 </div>
-
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-success d-block w-100"> Update Data</button>
                                                 </div>

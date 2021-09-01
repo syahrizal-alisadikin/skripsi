@@ -5,11 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class Dosen
+class Mahasiswa
 {
     public function handle($request, Closure $next)
     {
-        if (!auth::guard('dosen')->check()) {
+        if (!auth::guard('mahasiswa')->check()) {
 
             return redirect('/');
         }

@@ -49,14 +49,19 @@
                         <?php $i =1;?>
                        
                             @forelse ($dosen as $item)
+                            <?php 
+                            $jm_masuk = explode(" ",$item->jam_masuk);
+                            $jm_keluar = explode(" ",$item->jam_keluar);
+
+                            ?>
                                 <tr>
                                 <td><?=$i?></td>
                                 <td>{{$item->jadwal->matkul->nama}}</td>
                                 <td>{{$item->jadwal->matkul->kode}}</td>
                                 <td>{{$item->jadwal->matkul->sks}}</td>
                                 <td>{{$item->jadwal->hari}}</td>
-                                <td>{{$item->jam_masuk}}</td>
-                                <td>{{$item->jam_keluar}}</td>
+                                <td>{{$jm_masuk[1]}}</td>
+                                <td>{{$jm_keluar[1]}}</td>
                                 <td>{{$item->jadwal->jenis_kelas}}</td>
                                 <td>{{$item->keterangan}}</td>
                             </tr>

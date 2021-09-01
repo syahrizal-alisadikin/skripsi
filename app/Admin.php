@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Admin extends Authenticatable
 {
     use Notifiable;
-    use SoftDeletes;
+    // use SoftDeletes;
     
     protected $table = "admin";
     protected $primaryKey = "id";

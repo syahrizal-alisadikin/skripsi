@@ -82,6 +82,7 @@
               <th>No</th>
               <th>Nama Dosen</th>
               <th>Nama Matkul</th>
+              <th>Status Dosen</th>
               <th>Jenis Kelas</th>
               <th>Tanggal</th>
               <th>Keterangan Absen</th>
@@ -94,6 +95,7 @@
               <td>{{ $loop->iteration }}</td>
               <td>{{ $key->nama_dosen }}</td>
               <td>{{ $key->nama }}</td>
+              <td>{{ $key->status }}</td>
               <td>{{ $key->jenis_kelas }}</td>
               <td>{{ $key->tanggal }}</td>
               <td>{{ $key->keterangan }}</td>

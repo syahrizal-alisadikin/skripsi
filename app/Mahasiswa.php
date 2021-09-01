@@ -3,10 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Mahasiswa extends Model
+class Mahasiswa extends Authenticatable
 {
     protected $table = "mahasiswa";
+    protected $primaryKey = "id";
     protected $fillable = ['nim', 'name', 'id_semester', 'id_jurusan', 'email', 'password', 'alamat'];
 
     public function semester()

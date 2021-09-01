@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Matakuliah extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $table = "jadwal";
+    protected $primaryKey = "id";
     protected $fillable = ['id_matkul', 'id_dosen','id_jurusan', 'jenis_kelas', 'hari', 'jam_mulai', 'jam_selesai'];
 
     public function dosen()
@@ -29,5 +30,10 @@ class Matakuliah extends Model
     public function matkul()
     {
         return $this->belongsTo(NamaMatkul::class, 'id_matkul', 'id');
+    }
+
+    public function absen()
+    {
+        return $this->belongsTo(Absen::class, 'id', 'id_jadwal');
     }
 }

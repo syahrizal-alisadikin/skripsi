@@ -68,3 +68,8 @@ Route::prefix('dosen')->namespace('Dosen')
         // Absen 
         Route::resource('absensi', 'AbsenController');
     });
+
+Route::prefix('mahasiswa')->namespace('Mahasiswa')->middleware('mahasiswa')
+    ->group(function () {
+        Route::get('/', 'MahasiswaController@index')->name('dashboard.mahasiswa');
+    });
